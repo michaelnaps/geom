@@ -8,19 +8,6 @@ import cvxopt as cvx
 from scipy.linalg import block_diag
 
 
-def gca_3d():
-    """
-    Get current Matplotlib axes, and if they do not support 3-D plotting,
-    add new axes that support it
-    """
-    fig = plt.gcf()
-    if len(fig.axes) == 0 or not hasattr(plt.gca(), 'plot3D'):
-        axis = fig.add_subplot(111, projection='3d')
-    else:
-        axis = plt.gca()
-    return axis
-
-
 def numel(var):
     """
     Counts the number of entries in a numpy array, or returns 1 for fundamental
