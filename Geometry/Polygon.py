@@ -30,7 +30,8 @@ class Polygon:
             self.fig, self.axs = plt.subplots();
 
         # Plot polygon.
-        self.axs.plot( self.vList[0], self.vList[1] );
+        self.axs.plot( self.vList[0], self.vList[1],
+            color=self.color );
 
         # Axis parameters.
         self.axs.grid( grid );
