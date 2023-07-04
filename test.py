@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     cvar = circ.Circle( center, radius, color );
 
-    # cvar.plot();
+    cvar.plot();
     # plt.show();
 
     # test polygon module
@@ -23,5 +23,5 @@ if __name__ == '__main__':
     ] );
     pvar = poly.Polygon( vList );
 
-    pvar.plot();
+    pvar.plot( cvar.fig, cvar.axs );
     plt.show();

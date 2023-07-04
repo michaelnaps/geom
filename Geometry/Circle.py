@@ -5,9 +5,12 @@ class Circle:
     def __init__(self, center, radius, color='#9C9C9C'):
         self.x = center;
         self.r = radius;
+
+        # Plotting parameters.
+        self.fig = None;
+        self.axs = None;
         self.color = color;
         self.linewidth = 2.0;
-        return;
 
     def setLineWidth(self, width):
         self.linewidth = width;
@@ -24,9 +27,11 @@ class Circle:
         return sign*d - self.r;
 
     def plot(self, fig=None, axs=None,
-             lims=None, grid=True):
+             grid=True):
         if fig is None or axs is None:
-            fig, axs = plt.subplots();
+            self.fig, self.axs = plt.subplots();
+        if self.fig is None or self.axs is None:
+            self.fig, self.axs = plt.subplots();
 
         if self.r < 0:
             edge = self.color;
@@ -38,10 +43,10 @@ class Circle:
         spherepatch = plt.Circle( self.x[:,0], self.r,
             facecolor=face, edgecolor=edge,
             linewidth=self.linewidth );
-        axs.add_patch( spherepatch );
+        self.axs.add_patch( spherepatch );
 
-        axs.grid( grid );
-        axs.axis( 'equal' );
+        self.axs.grid( grid );
+        self.axs.axis( 'equal' );
 
         # Return instance of self.
         return self;
