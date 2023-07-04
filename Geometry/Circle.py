@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Circle:
-    def __init__(self, center, radius, color='#9C9C9C'):
+    def __init__(self, center, radius,
+            color='#9C9C9C'):
         self.x = center;
         self.r = radius;
 
@@ -27,9 +28,10 @@ class Circle:
         return sign*d - self.r;
 
     def plot(self, fig=None, axs=None,
-             grid=True):
-        if fig is None or axs is None:
-            self.fig, self.axs = plt.subplots();
+            grid=True):
+        if fig is not None:
+            self.fig = fig;
+            self.axs = axs;
         if self.fig is None or self.axs is None:
             self.fig, self.axs = plt.subplots();
 
