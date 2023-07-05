@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import time
 # personal classes
 import Geometry.Circle as circ
 import Geometry.Polygon as poly
@@ -26,4 +26,9 @@ if __name__ == '__main__':
     fig, axs = plt.subplots();
     cvar.plot( fig, axs );
     pvar.plot( fig, axs );
-    plt.show();
+    plt.show(block=0);
+    plt.pause(1);
+
+    # Test replot function.
+    cvar.replot( np.array( [[0],[0]] ) );
+    plt.pause(10);

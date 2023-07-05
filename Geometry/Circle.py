@@ -10,6 +10,7 @@ class Circle:
         # Plotting parameters.
         self.fig = None;
         self.axs = None;
+        self.spherepatch = None;
         self.color = color;
         self.linewidth = 2.0;
 
@@ -17,19 +18,33 @@ class Circle:
         self.linewidth = width;
 
     def distance(self, pt):
+        # Check if circle is filled/empty.
         if self.r < 0:
             sign = -1;
         else:
             sign =  1;
 
+        # Get distance from center.
         d = np.linalg.norm( pt - self.x )
 
-        # Return distance from point.
+        # Return distance from edge of circle.
         return sign*d - self.r;
+
+    def replot(self, center, grid=True):
+        # Update position of sphere.
+        print(self.x)
+        self.x = center;
+        print(self.x)
+        # Remove sphere patch from drawing and replot.
+        self.circlepatch.remove();
+        self.plot( fig=self.fig, axs=self.axs, grid=grid );
+
+        # Return instance of self.
+        return self;
 
     def plot(self, fig=None, axs=None,
             grid=True):
-        if fig is not None:
+        if fig is not None or axs is None:
             self.fig = fig;
             self.axs = axs;
         if self.fig is None or self.axs is None:
@@ -41,11 +56,11 @@ class Circle:
         else:
             edge = 'none';
             face = self.color;
-
-        spherepatch = plt.Circle( self.x[:,0], self.r,
+        print(self.x)
+        self.circlepatch = plt.Circle( self.x[:,0], self.r,
             facecolor=face, edgecolor=edge,
             linewidth=self.linewidth );
-        self.axs.add_patch( spherepatch );
+        self.axs.add_patch( self.circlepatch );
 
         self.axs.grid( grid );
         self.axs.axis( 'equal' );
