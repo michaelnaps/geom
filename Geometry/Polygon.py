@@ -20,9 +20,12 @@ class Polygon:
         self.color = color;
         self.fig = None;
         self.axs = None;
+        self.grid = True;
 
-    def plot(self, fig=None, axs=None,
-             grid=True):
+    def transform(self, R):
+        pass;
+
+    def plot(self, fig=None, axs=None):
         if fig is not None:
             self.fig = fig;
             self.axs = axs;
@@ -34,7 +37,7 @@ class Polygon:
             color=self.color );
 
         # Axis parameters.
-        self.axs.grid( grid );
+        self.axs.grid( self.grid );
         self.axs.axis( 'equal' );
 
         # Return instance of self.

@@ -13,6 +13,7 @@ class Circle:
         self.spherepatch = None;
         self.color = color;
         self.linewidth = 2.0;
+        self.grid = True;
 
     def setLineWidth(self, width):
         self.linewidth = width;
@@ -30,18 +31,17 @@ class Circle:
         # Return distance from edge of circle.
         return sign*d - self.r;
 
-    def update(self, center, grid=True):
+    def transform(self, center):
         # Update position of sphere.
         self.x = center;
         # Remove sphere patch from drawing and replot.
         self.circlepatch.remove();
-        self.plot( fig=self.fig, axs=self.axs, grid=grid );
+        self.plot( fig=self.fig, axs=self.axs);
 
         # Return instance of self.
         return self;
 
-    def plot(self, fig=None, axs=None,
-            grid=True):
+    def plot(self, fig=None, axs=None):
         if fig is not None or axs is None:
             self.fig = fig;
             self.axs = axs;
@@ -54,13 +54,13 @@ class Circle:
         else:
             edge = 'none';
             face = self.color;
-        print(self.x)
+
         self.circlepatch = plt.Circle( self.x[:,0], self.r,
             facecolor=face, edgecolor=edge,
             linewidth=self.linewidth );
         self.axs.add_patch( self.circlepatch );
 
-        self.axs.grid( grid );
+        self.axs.grid( self.grid );
         self.axs.axis( 'equal' );
 
         # Return instance of self.
