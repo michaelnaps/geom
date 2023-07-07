@@ -30,5 +30,5 @@ if __name__ == '__main__':
     plt.pause(1);
 
     # Test replot function.
-    cvar.replot( np.array( [[0],[0]] ) );
+    cvar.update( np.array( [[0],[0]] ) );
     plt.pause(10);

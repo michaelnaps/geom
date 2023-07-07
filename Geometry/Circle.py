@@ -30,11 +30,9 @@ class Circle:
         # Return distance from edge of circle.
         return sign*d - self.r;
 
-    def replot(self, center, grid=True):
+    def update(self, center, grid=True):
         # Update position of sphere.
-        print(self.x)
         self.x = center;
-        print(self.x)
         # Remove sphere patch from drawing and replot.
         self.circlepatch.remove();
         self.plot( fig=self.fig, axs=self.axs, grid=grid );
