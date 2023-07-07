@@ -35,13 +35,19 @@ class Polygon:
     def setLineWidth(self, width):
         self.linewidth = width;
 
-    def transform(self, R=None, dx=None):
+    def transform(self, R, dx):
         if R is None:
             R = np.eye( 2,2 );
         if dx is None:
             dx = np.zeros( (2,1) );
 
+        # Update position of vertices.
         self.vList = R@self.vList + dx;
+
+    def draw(self, R=None, dx=None):
+        # Transform if necessary.
+        if R is not None or dx is not None:
+            self.transform( R, dx );
 
         # Replot the new polygon.
         self.pathpatch.remove();

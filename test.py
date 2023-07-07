@@ -31,4 +31,5 @@ if __name__ == '__main__':
 
     # Test replot function.
     pvar.transform( R=poly.rotZ( np.pi/2 ), dx=np.array( [[1],[1]] ) );
+    pvar.draw();
     plt.pause(10);

@@ -31,15 +31,22 @@ class Circle:
         # Return distance from edge of circle.
         return sign*d - self.r;
 
-    def transform(self, center):
+    def transform(self, x):
         # Update position of sphere.
-        self.x = center;
+        self.x = x;
+
+    def draw(self, x=None):
+        # Transform if necessary.
+        if x is not None:
+            self.transform( x );
+
         # Remove sphere patch from drawing and replot.
         self.circlepatch.remove();
         self.plot( fig=self.fig, axs=self.axs);
 
         # Return instance of self.
         return self;
+
 
     def plot(self, fig=None, axs=None):
         if fig is not None or axs is None:
