@@ -47,7 +47,6 @@ class Circle:
         # Return instance of self.
         return self;
 
-
     def plot(self, fig=None, axs=None):
         if fig is not None or axs is None:
             self.fig = fig;
