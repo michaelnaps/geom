@@ -56,7 +56,7 @@ class Circle:
         else:
             edge = 'none';
             face = self.color;
-        print(self.x)
+
         self.circlepatch = plt.Circle( self.x[:,0], self.r,
             facecolor=face, edgecolor=edge,
             linewidth=self.linewidth );
