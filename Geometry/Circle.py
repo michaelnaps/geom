@@ -29,7 +29,7 @@ class Circle:
         d = np.linalg.norm( pt - self.x )
 
         # Return distance from edge of circle.
-        return sign*(d - self.r);
+        return sign*d - self.r;
 
     def transform(self, x):
         # Update position of sphere.
