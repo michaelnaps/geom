@@ -13,10 +13,10 @@ if __name__ == '__main__':
 
     # test polygon module
     vList = np.array( [
-        [-1, 1, 2, -1.5],
-        [1, 1, -1, -1.5]
+        [-2, 2, 2, -2],
+        [1, 1, -1, -1]
     ] );
-    pcolor = 'yellowgreen';
+    pcolor = 'k';
 
     # Initialize shape variables.
     cvar = circ.Circle( center, radius, ccolor );
@@ -26,9 +26,10 @@ if __name__ == '__main__':
     fig, axs = plt.subplots();
     cvar.plot( fig, axs );
     pvar.plot( fig, axs );
-    plt.show(block=0);
+    plt.show( block=0 );
     plt.pause(1);
 
     # Test replot function.
-    cvar.replot( np.array( [[0],[0]] ) );
+    pvar.transform( R=poly.rotZ( np.pi/2 ), dx=np.array( [[1],[1]] ) );
+    pvar.draw();
     plt.pause(10);
