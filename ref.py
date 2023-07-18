@@ -89,7 +89,7 @@ def angle(vertex0, vertex1, vertex2, angle_type='unsigned'):
 
 def clip(val, threshold):
     """
-    If val is a scalar, threshold its value; if it is a vector, normalized it
+    If val is a scalar, threshold its value if it is a vector, normalized it
     """
     if isinstance(val, np.ndarray):
         val_norm = np.linalg.norm(val)
@@ -395,65 +395,65 @@ class Polygon:
         return flag_points
 
     def distance(self, points):
-        dist = [];
+        dist = []
 
         for point in points.transpose():
-            d_list = [];
+            d_list = []
             for i_vx, vertex in enumerate(self.vertices.transpose()):
-                next_vertex = self.vertices_loop[:,i_vx+1];
+                next_vertex = self.vertices_loop[:,i_vx+1]
 
-                # print("v  =", vertex);
-                # print("vn =", next_vertex);
+                # print("v  =", vertex)
+                # print("vn =", next_vertex)
 
-                l_i = np.linalg.norm(point - vertex);
-                l_j = np.linalg.norm(point - next_vertex);
-                w_ij = np.linalg.norm(vertex.T - next_vertex);
+                l_i = np.linalg.norm(point - vertex)
+                l_j = np.linalg.norm(point - next_vertex)
+                w_ij = np.linalg.norm(vertex.T - next_vertex)
 
-                s_ij = 1/2*(l_i + l_j + w_ij);
-                A_ij = np.sqrt(s_ij*(s_ij - l_i)*(s_ij - l_j)*(s_ij - w_ij));
+                s_ij = 1/2*(l_i + l_j + w_ij)
+                A_ij = np.sqrt(s_ij*(s_ij - l_i)*(s_ij - l_j)*(s_ij - w_ij))
 
-                d_list.append(2*A_ij/w_ij);
+                d_list.append(2*A_ij/w_ij)
 
-            dist.append(d_list);
+            dist.append(d_list)
 
-        return np.array(dist);
+        return np.array(dist)
 
     def min_distance(self, point):
-        dist = self.distance(point)[0];
-        return np.array([np.min(dist)]);
+        dist = self.distance(point)[0]
+        return np.array([np.min(dist)])
 
     def distance_grad(self, point, h=1e-3):
         if self.is_collision(point)[0]:
-            g = np.array([[np.nan], [np.nan]]);
+            g = np.array([[np.nan], [np.nan]])
 
         else:
             # distances from point
-            d = self.distance(point);
+            d = self.distance(point)
 
             # 2-point central difference method
-            x_adj = np.array([[h],[0]]);
-            y_adj = np.array([[0],[h]]);
+            x_adj = np.array([[h],[0]])
+            y_adj = np.array([[0],[h]])
 
-            ptn1_x = point - x_adj;
-            ptp1_x = point + x_adj;
-            dn1_x = self.distance(ptn1_x)[0];
-            dp1_x = self.distance(ptp1_x)[0];
+            ptn1_x = point - x_adj
+            ptp1_x = point + x_adj
+            dn1_x = self.distance(ptn1_x)[0]
+            dp1_x = self.distance(ptp1_x)[0]
 
-            ptn1_y = point - y_adj;
-            ptp1_y = point + y_adj;
-            dn1_y = self.distance(ptn1_y)[0];
-            dp1_y = self.distance(ptp1_y)[0];
+            ptn1_y = point - y_adj
+            ptp1_y = point + y_adj
+            dn1_y = self.distance(ptn1_y)[0]
+            dp1_y = self.distance(ptp1_y)[0]
 
             g = np.array([
                 (dp1_x - dn1_x),
                 (dp1_y - dn1_y)
-            ]) / (2*h*d);
+            ]) / (2*h*d)
 
-        return g;
+        return g
 
     def total_distance_grad(self, point, h=1e-3):
-        dist_grad = self.distance_grad(point, h=h);
-        return np.array([[np.sum(dist_grad[0])],[np.sum(dist_grad[1])]]);
+        dist_grad = self.distance_grad(point, h=h)
+        return np.array([[np.sum(dist_grad[0])],[np.sum(dist_grad[1])]])
 
 
 class Sphere:
@@ -471,7 +471,7 @@ class Sphere:
         This function draws the sphere (i.e., a circle) of the given radius, and the specified color,
         and then draws another circle in gray with radius equal to the distance of influence.
         """
-        TOL = 1e-6;
+        TOL = 1e-6
 
         # Get current axes
         ax = plt.gca()
@@ -509,19 +509,19 @@ class Sphere:
                            fill=False))
 
     def is_filled(self):
-        return self.radius > 0;
+        return self.radius > 0
 
     def flip(self):
-        self.radius *= -1;
+        self.radius *= -1
 
     def distance(self, points):
         center = np.array([self.center[0][0], self.center[1][0]])
-        points_dist = [];
+        points_dist = []
 
         if self.radius > 0:
-            neg = 1;
+            neg = 1
         else:
-            neg = -1;
+            neg = -1
 
         # d(x, x_c) = 1/2 * ||x - x_c||^2
         for point in points.transpose():
@@ -533,14 +533,14 @@ class Sphere:
         return np.array(points_dist)
 
     def min_distance(self, points):
-        return self.distance(points);
+        return self.distance(points)
 
     def distance_grad(self, points):
         """
         Computes the gradient of the signed distance between points and the
         sphere, consistently with the definition of Sphere.distance.
         """
-        TOL = 1e-6;
+        TOL = 1e-6
         center = np.array([self.center[0][0], self.center[1][0]])
 
         # grad d(x, x_c) = (x - x_c) / ||x - x_c||
@@ -551,22 +551,22 @@ class Sphere:
                 points_grad.append((point - center) / points_dist[i])
 
             elif points_dist[i] < -TOL:
-                points_grad.append([np.nan, np.nan]);
+                points_grad.append([np.nan, np.nan])
 
             else:
-                points_grad.append([0., 0.]);
+                points_grad.append([0., 0.])
 
         points_grad = np.array(points_grad)
 
         if self.is_filled():
-            neg = 1;
+            neg = 1
         else:
-            neg = -1;
+            neg = -1
 
         return neg*points_grad.T
 
     def total_distance_grad(self, points):
-        return self.distance_grad(points);
+        return self.distance_grad(points)
 
     def is_collision(self, points):
         points_dist = self.distance(points)
@@ -575,175 +575,175 @@ class Sphere:
 
 class Robot:
     def __init__(self, sphere, role, color, name):
-        self.x = sphere.center;
-        self.r = sphere.radius;
-        self.tag_r = sphere.distance_influence;
-        self.role = role;
-        self.color = color;
-        self.name = name;
+        self.x = sphere.center
+        self.r = sphere.radius
+        self.tag_r = sphere.distance_influence
+        self.role = role
+        self.color = color
+        self.name = name
 
     @property
     def sphere(self):
-        return Sphere(self.x, self.r, self.tag_r);
+        return Sphere(self.x, self.r, self.tag_r)
 
     def plot(self, dinf_color='k'):
-        self.sphere.plot(color=self.color, dinf_color=dinf_color);
+        self.sphere.plot(color=self.color, dinf_color=dinf_color)
 
     def move(self, dt=0.001, u=None):
-        m = 1;
+        m = 1
         if u is None:
-            u = np.array([[0],[0]]);
+            u = np.array([[0],[0]])
         self.x = self.x + dt*u
 
     def distance(self, points):
-        return self.sphere.distance(points);
+        return self.sphere.distance(points)
 
     def distance_grad(self, points):
-        return self.sphere.distance_grad(points);
+        return self.sphere.distance_grad(points)
 
     def control(self, dt, walls, robots, wgain=1, pgain=1):
-        q = walls[0].distance(self.x);
-        P = wgain*walls[0].distance_grad(self.x);
+        q = walls[0].distance(self.x)
+        P = wgain*walls[0].distance_grad(self.x)
 
         if q.ndim == 1:
-            q.shape = (q.shape[0], 1);
+            q.shape = (q.shape[0], 1)
 
         for wall in walls[1:]:
-            q = np.concatenate((q, [wall.distance(self.x)]), axis=1);
-            P = np.concatenate((P, wgain*wall.distance_grad(self.x)), axis=1);
+            q = np.concatenate((q, [wall.distance(self.x)]), axis=1)
+            P = np.concatenate((P, wgain*wall.distance_grad(self.x)), axis=1)
 
         if self.role == 'evader':
             for robot in robots:
                 if not robot.name == self.name:
                     if robot.role == 'evader':
-                        robot_dist = robot.distance(self.x);
-                        robot_grad = robot.distance_grad(self.x);
+                        robot_dist = robot.distance(self.x)
+                        robot_grad = robot.distance_grad(self.x)
 
                         if robot_dist.ndim == 1:
-                            robot_dist.shape = (1,1);
+                            robot_dist.shape = (1,1)
 
-                        q = np.concatenate((q, robot_dist), axis=1);
-                        P = np.concatenate((P, robot_grad), axis=1);
+                        q = np.concatenate((q, robot_dist), axis=1)
+                        P = np.concatenate((P, robot_grad), axis=1)
 
                     elif robot.role == 'pursuer' or robot.role == 'paused':
-                        u_ref = -pgain*robot.distance_grad(self.x);
+                        u_ref = -pgain*robot.distance_grad(self.x)
 
         elif self.role == 'pursuer':
-            i_min = -1;
-            d_min = np.inf;
+            i_min = -1
+            d_min = np.inf
 
             for i, robot in enumerate(robots):
                 if not robot.name == self.name:
-                    d_current = robot.distance(self.x)[0];
+                    d_current = robot.distance(self.x)[0]
                     if d_current < d_min:
-                        i_min = i;
-                        d_min = d_current;
+                        i_min = i
+                        d_min = d_current
 
             print('minimum robot:', robots[i_min].name)
-            u_ref = robots[i_min].distance_grad(self.x);
+            u_ref = robots[i_min].distance_grad(self.x)
 
         elif self.role == 'paused':
-            u_ref = np.array([[0],[0]]);
+            u_ref = np.array([[0],[0]])
 
-        u = qp_supervisor(-P.T, -q.T, u_ref=u_ref);
-        self.move(dt=dt, u=u);
+        u = qp_supervisor(-P.T, -q.T, u_ref=u_ref)
+        self.move(dt=dt, u=u)
 
     def impact(self, evader):
-        dist = self.distance(evader.x);
-        dist -= evader.r;
+        dist = self.distance(evader.x)
+        dist -= evader.r
         if dist < self.tag_r:
-            return True;
-        return False;
+            return True
+        return False
 
 
 class RobotEnvironment:
     def __init__(self, walls, robots, wall_gain=1, pursuer_gain=1):
         for wall in walls:
             if wall.is_filled():
-                wall.flip();
+                wall.flip()
 
-        self.walls = walls;
+        self.walls = walls
 
-        self.robots = robots;
-        self.wgain = wall_gain;
-        self.pgain = pursuer_gain;
-        self.pause = 0;
+        self.robots = robots
+        self.wgain = wall_gain
+        self.pgain = pursuer_gain
+        self.pause = 0
 
     def distance_grad(self, point, exclude_robot=None):
-        walls_grad = np.array([[0],[0]]);
+        walls_grad = np.array([[0],[0]])
         for wall in self.walls:
-            walls_grad = walls_grad + wall.total_distance_grad(point);
+            walls_grad = walls_grad + wall.total_distance_grad(point)
 
-        robot_grad = np.array([[0],[0]]);
+        robot_grad = np.array([[0],[0]])
         for robot in self.robots:
             if not exclude_robot == robot.name:
                 if robot.role == 'pursuer':
-                    g = self.pgain;
+                    g = self.pgain
                 else:
-                    g = 1;
-                robot_grad = robot_grad + g*robot.distance_grad(point);
+                    g = 1
+                robot_grad = robot_grad + g*robot.distance_grad(point)
 
-        return robot_grad + self.wgain*walls_grad;
+        return robot_grad + self.wgain*walls_grad
 
     def update(self, dt=0.001):
-        TOL = 1e-6;
+        TOL = 1e-6
         for robot in self.robots:
             if robot.role == 'pursuer':
-                robot.control(dt, self.walls, self.robots, self.wgain, self.pgain);
+                robot.control(dt, self.walls, self.robots, self.wgain, self.pgain)
                 if self.tagged(robot):
-                    break;
+                    break
 
             elif robot.role == 'evader':
-                robot.control(dt, self.walls, self.robots, self.wgain, self.pgain);
+                robot.control(dt, self.walls, self.robots, self.wgain, self.pgain)
 
             elif robot.role == 'paused':
                 if self.pause > TOL:
-                    self.pause -= dt;
+                    self.pause -= dt
                 elif np.abs(self.pause) < TOL:
-                    robot.role = 'pursuer';
-                    self.pause = 0;
+                    robot.role = 'pursuer'
+                    self.pause = 0
 
-            print(robot.name, ':', robot.role);
+            print(robot.name, ':', robot.role)
 
     def tagged(self, pursuer):
         for evader in self.robots:
             if not evader.name == pursuer.name:
                 if pursuer.impact(evader):
-                    pursuer.role = 'evader';
-                    evader.role = 'paused';
-                    self.pause = 1;
-                    return True;
-        return False;
+                    pursuer.role = 'evader'
+                    evader.role = 'paused'
+                    self.pause = 1
+                    return True
+        return False
 
     def plot(self):
         for wall in self.walls[::-1]:
-            wall.plot(color='k');
+            wall.plot(color='k')
 
         for robot in self.robots:
             if robot.role == 'evader':
-                dinf_color = 'g';
+                dinf_color = 'g'
             elif robot.role == 'pursuer':
-                dinf_color = 'r';
+                dinf_color = 'r'
             elif robot.role == 'paused':
-                dinf_color = 'y';
-            robot.plot(dinf_color=dinf_color);
+                dinf_color = 'y'
+            robot.plot(dinf_color=dinf_color)
 
     def animate(self, Nt, dt=0.001, stop=-1):
         for i in range(Nt):
-            t = i*dt;
+            t = i*dt
 
-            plt.clf();
+            plt.clf()
 
-            self.update(dt=dt);
-            self.plot();
+            self.update(dt=dt)
+            self.plot()
 
             if t-dt == stop:
-                plt.show(block=1);
+                plt.show(block=1)
             else:
-                plt.show(block=0);
+                plt.show(block=0)
 
-            plt.title('t = %.3f[s]' % t);
-            plt.pause(dt);
+            plt.title('t = %.3f[s]' % t)
+            plt.pause(dt)
 
 
 def qp_supervisor(a_barrier, b_barrier, u_ref=None, solver='cvxopt'):
