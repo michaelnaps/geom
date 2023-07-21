@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 # personal classes
-import Geometry.Circle as circ
-import Geometry.Polygon as poly
+import GEOM.Circle as circ
+import GEOM.Polygon as poly
 
 if __name__ == '__main__':
     # test sphere module
