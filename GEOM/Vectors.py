@@ -16,7 +16,6 @@ class Vectors:
         self.Nv = vertices.shape[1]
 
         # Initialize vertices.
-        # Append first vertex to end for plotting.
         self.vList = vertices
 
         # Initialize empty fig/axs variables.
@@ -29,11 +28,7 @@ class Vectors:
     def setLineWidth(self, width):
         self.linewidth = width
 
-    def transform(self, R, dx):
-        if R is None:
-            R = np.eye( 2,2 )
-        if dx is None:
-            dx = np.zeros( (2,1) )
+    def transform(self, R=np.eye( 2, 2 ), dx=np.zeros( (2, 1) )):
 
         # Update position of vertices.
         self.vList = R@self.vList + dx
