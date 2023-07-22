@@ -12,7 +12,8 @@ def rotZ(theta):
     return R
 
 class Vectors:
-    def __init__(self, vertices, color='k', arrows=True):
+    def __init__(self, vertices, fig=None, axs=None,
+            color='k', arrows=True):
         self.Nv = vertices.shape[1]
 
         # Initialize vertices.
@@ -20,38 +21,40 @@ class Vectors:
 
         # Initialize empty fig/axs variables.
         self.color = color
-        self.fig = None
-        self.axs = None
+        self.fig = fig
+        self.axs = axs
         self.linewidth = 2.0
         self.grid = True
 
     def setLineWidth(self, width):
         self.linewidth = width
+        # Return instance of self.
+        return self
+
+    def setVertices(self, vertices):
+        self.vList = vertices
+        # Return instance of self.
+        return self
 
     def transform(self, R=np.eye( 2, 2 ), dx=np.zeros( (2, 1) )):
-
         # Update position of vertices.
         self.vList = R@self.vList + dx
+        # Return instance of self.
+        return self
 
-    def draw(self, R=None, dx=None):
+    def update(self, R=None, dx=None):
         # Transform if necessary.
         if R is not None or dx is not None:
             self.transform( R, dx )
 
         # Replot the new polygon.
         self.pathpatch.remove()
-        self.plot( fig=self.fig, axs=self.axs )
+        self.draw( new=0 )
 
         # Return instance of self.
         return self
 
-    def plot(self, fig=None, axs=None):
-        if fig is not None:
-            self.fig = fig
-            self.axs = axs
-        if self.fig is None or self.axs is None:
-            self.fig, self.axs = plt.subplots()
-
+    def draw(self, new=1):
         # Plot polygon.
         self.pathpatch = patches.PathPatch(
             path.Path( self.vList.T ),
@@ -60,8 +63,9 @@ class Vectors:
         self.axs.add_patch( self.pathpatch )
 
         # Axis parameters.
-        self.axs.grid( self.grid )
-        self.axs.axis( 'equal' )
+        if new:
+            self.axs.grid( self.grid )
+            self.axs.axis( 'equal' )
 
         # Return instance of self.
         return self
