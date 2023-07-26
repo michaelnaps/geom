@@ -24,7 +24,7 @@ class Vectors:
         self.fig = fig
         self.axs = axs
         self.linewidth = 2.0
-        self.grid = True
+        self.grid = 1
 
     def setLineWidth(self, width):
         self.linewidth = width
@@ -42,30 +42,27 @@ class Vectors:
         # Return instance of self.
         return self
 
-    def update(self, R=None, dx=None):
+    def update(self, vertices=None, R=None, dx=None):
         # Transform if necessary.
+        if vertices is not None:
+            self.setVertices( vertices )
         if R is not None or dx is not None:
             self.transform( R, dx )
 
         # Replot the new polygon.
         self.pathpatch.remove()
-        self.draw( new=0 )
+        self.draw()
 
         # Return instance of self.
         return self
 
-    def draw(self, new=1):
+    def draw(self):
         # Plot polygon.
         self.pathpatch = patches.PathPatch(
             path.Path( self.vList.T ),
             facecolor='none', edgecolor=self.color,
             linewidth=self.linewidth )
         self.axs.add_patch( self.pathpatch )
-
-        # Axis parameters.
-        if new:
-            self.axs.grid( self.grid )
-            self.axs.axis( 'equal' )
 
         # Return instance of self.
         return self
