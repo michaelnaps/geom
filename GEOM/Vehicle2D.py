@@ -19,11 +19,7 @@ class Vehicle2D:
             self.fig = fig;  self.axs = axs
 
         # figure scaling, grid, equal axes
-        self.axs.set_xlim( -10, 10 )
-        self.axs.set_ylim( -10, 10 )
-        self.axs.axis( 'equal' )
         self.axs.grid( grid )
-        # self.fig.tight_layout()
 
         # vehicle parameters
         self.radius = radius

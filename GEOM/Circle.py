@@ -71,8 +71,5 @@ class Circle:
             linewidth=self.linewidth )
         self.axs.add_patch( self.circlepatch )
 
-        self.axs.grid( self.grid )
-        self.axs.axis( 'equal' )
-
         # Return instance of self.
         return self
