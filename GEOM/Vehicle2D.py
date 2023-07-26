@@ -56,8 +56,10 @@ class Vehicle2D:
         # Return instance of self.
         return self
 
-    def draw(self, block=0):
-        plt.show( block=block )
+    def draw(self, x):
+        self.drawVehicle( x )
+        if self.draw_tail:
+            self.drawTail( x )
         # Return instance of self.
         return self
 
@@ -103,14 +105,13 @@ class Vehicle2D:
         return self
 
     def update(self, x, pause=1):
-        # Update vehicle location.
+        # Remove vehicle body and tail.
         self.body.remove()
-        self.drawVehicle( x )
-
-        # Update tail location if applicable.
         if self.draw_tail:
             self.tail_patch.remove()
-            self.drawTail( x )
+
+        # Update drawing.
+        self.draw( x )
 
         # Pause plotting/sim if requested.
         if pause:

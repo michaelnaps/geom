@@ -46,7 +46,7 @@ class Circle:
 
         # Remove sphere patch from drawing and replot.
         self.circlepatch.remove()
-        self.draw( fig=self.fig, axs=self.axs)
+        self.draw()
 
         # Return instance of self.
         return self
