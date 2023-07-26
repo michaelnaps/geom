@@ -31,9 +31,14 @@ class Circle:
         # Return distance from edge of circle.
         return sign*d - self.r
 
-    def transform(self, x):
+    def transform(self, center=None, radius=None):
         # Update position of sphere.
-        self.x = x
+        if x is not None:
+            self.x = center
+        if r is not None:
+            self.r = radius
+        # Return instance of self.
+        return self
 
     def draw(self, x=None):
         # Transform if necessary.
