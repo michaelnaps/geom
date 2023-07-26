@@ -33,27 +33,26 @@ class Circle:
 
     def transform(self, center=None, radius=None):
         # Update position of sphere.
-        if x is not None:
+        if center is not None:
             self.x = center
-        if r is not None:
+        if radius is not None:
             self.r = radius
         # Return instance of self.
         return self
 
-    def draw(self, x=None):
+    def update(self, center=None, radius=None):
         # Transform if necessary.
-        if x is not None:
-            self.transform( x )
+        self.transform( center, radius )
 
         # Remove sphere patch from drawing and replot.
         self.circlepatch.remove()
-        self.plot( fig=self.fig, axs=self.axs)
+        self.draw( fig=self.fig, axs=self.axs)
 
         # Return instance of self.
         return self
 
-    def plot(self, fig=None, axs=None):
-        if fig is not None or axs is None:
+    def draw(self, fig=None, axs=None):
+        if fig is not None:
             self.fig = fig
             self.axs = axs
         if self.fig is None or self.axs is None:
@@ -63,7 +62,7 @@ class Circle:
             edge = self.color
             face = 'none'
         else:
-            edge = 'none'
+            edge = 'k'
             face = self.color
 
         self.circlepatch = plt.Circle( self.x[:,0], self.r,
