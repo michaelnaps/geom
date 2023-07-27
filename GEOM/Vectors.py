@@ -24,10 +24,16 @@ class Vectors:
         self.fig = fig
         self.axs = axs
         self.linewidth = 2.0
+        self.linestyle = None
         self.grid = 1
 
     def setLineWidth(self, width):
         self.linewidth = width
+        # Return instance of self.
+        return self
+
+    def setLineStyle(self, style):
+        self.linestyle = style
         # Return instance of self.
         return self
 
@@ -61,7 +67,8 @@ class Vectors:
         self.pathpatch = patches.PathPatch(
             path.Path( self.vList.T ),
             facecolor='none', edgecolor=self.color,
-            linewidth=self.linewidth )
+            linewidth=self.linewidth,
+            linestyle=self.linestyle )
         self.axs.add_patch( self.pathpatch )
 
         # Return instance of self.
