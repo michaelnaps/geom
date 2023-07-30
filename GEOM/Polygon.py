@@ -7,7 +7,7 @@ def areaRect(Rectangle):
     return l*w
 
 class Polygon( Vectors ):
-    def __init__(self, vertices, color='k'):
+    def __init__(self, vertices, fig=None, axs=None, color='k'):
         # Add line between final point and first point.
         Nv = vertices.shape[1]
         vList = np.empty( (2, Nv+1) )
@@ -15,4 +15,5 @@ class Polygon( Vectors ):
         vList[:,-1] = vertices[:,0]
 
         # Initialize parent class.
-        Vectors.__init__( self, vList, color=color, arrows=False )
+        Vectors.__init__( self, vList,
+            fig=fig, axs=axs, color=color, arrows=False )

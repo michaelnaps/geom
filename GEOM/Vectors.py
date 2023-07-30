@@ -19,10 +19,15 @@ class Vectors:
         # Initialize vertices.
         self.vList = vertices
 
+        # Initialize fig and axs members.
+        if fig is None:
+            self.fig, self.axs = plt.subplots()
+        else:
+            self.fig = fig
+            self.axs = axs
+
         # Initialize empty fig/axs variables.
         self.color = color
-        self.fig = fig
-        self.axs = axs
         self.linewidth = 2.0
         self.linestyle = None
         self.grid = 1

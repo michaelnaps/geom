@@ -3,13 +3,18 @@ import matplotlib.pyplot as plt
 
 class Circle:
     def __init__(self, center, radius,
-            color='#9C9C9C'):
+            fig=None, axs=None, color='#9C9C9C'):
         self.x = center
         self.r = radius
 
+        # Initialize fig and axs members.
+        if fig is None:
+            self.fig, self.axs = plt.subplots()
+        else:
+            self.fig = fig
+            self.axs = axs
+
         # Plotting parameters.
-        self.fig = None
-        self.axs = None
         self.spherepatch = None
         self.color = color
         self.linewidth = 2.0
@@ -51,13 +56,7 @@ class Circle:
         # Return instance of self.
         return self
 
-    def draw(self, fig=None, axs=None):
-        if fig is not None:
-            self.fig = fig
-            self.axs = axs
-        if self.fig is None or self.axs is None:
-            self.fig, self.axs = plt.subplots()
-
+    def draw(self):
         if self.r < 0:
             edge = self.color
             face = 'none'
