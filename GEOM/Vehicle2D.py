@@ -143,3 +143,7 @@ class Vehicle2D:
             self.fig.set_figheight( h )
         # Return instance of self.
         return self
+
+class Swarm2D( Vehicle2D ):
+    def __init__(self, X0, fig=None, axs=None):
+        pass

@@ -7,6 +7,11 @@ from GEOM.Polygon import *
 from GEOM.Vectors import *
 from GEOM.Vehicle2D import *
 
+def model(x, dt=0.01):
+    A = np.array( [[0, -1],[1, 0]] )
+    dx = A@x
+    return x + dt*dx
+
 if __name__ == '__main__':
     # test sphere module
     center = np.array( [[0],[1]] )
@@ -22,7 +27,7 @@ if __name__ == '__main__':
 
     # Initialize shape variables.
     fig, axs = plt.subplots()
-    axs.set_ylim( (-10, 10) )
+    axs.set_ylim( (-5, 5) )
     axs.axis( 'equal' )
     cvar = Circle( center, radius,
         fig=fig, axs=axs, color=ccolor )
@@ -43,6 +48,12 @@ if __name__ == '__main__':
     pvar.transform( R=rotZ( np.pi/4 ), dx=np.array( [[1],[1]] ) )
     cvar.update()
     pvar.update()
+
+    # Test Vehicle class.
+    x0 = np.array( [[1], [0]] )
+
+    vhccolor = 'purple'
+    vhc = Vehicle2D( x0, fig=fig, axs=axs, color=vhccolor )
     plt.pause(5)
 
     # # Test swarm.
