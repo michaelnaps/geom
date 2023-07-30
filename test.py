@@ -5,7 +5,7 @@ import time
 from GEOM.Circle import *
 from GEOM.Polygon import *
 from GEOM.Vectors import *
-from GEOM.Swarm2D import *
+from GEOM.Vehicle2D import *
 
 if __name__ == '__main__':
     # test sphere module
@@ -45,6 +45,6 @@ if __name__ == '__main__':
     pvar.update()
     plt.pause(5)
 
-    # Test swarm.
-    X0 = np.random.rand( 2, 3 )
-    swarm = Swarm( X0 )
+    # # Test swarm.
+    # X0 = np.random.rand( 2, 3 )
+    # swarm = Swarm( X0 )
