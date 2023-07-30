@@ -5,7 +5,7 @@ import time
 from GEOM.Circle import *
 from GEOM.Polygon import *
 from GEOM.Vectors import *
-from GEOM.Swarm import *
+from GEOM.Swarm2D import *
 
 if __name__ == '__main__':
     # test sphere module
