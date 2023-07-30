@@ -7,7 +7,7 @@ from GEOM.Polygon import *
 from GEOM.Vectors import *
 from GEOM.Vehicle2D import *
 
-def model(x, dt=0.01):
+def model(x, dt=1e-2):
     A = np.array( [[0, -1],[1, 0]] )
     dx = A@x
     return x + dt*dx
@@ -50,11 +50,17 @@ if __name__ == '__main__':
     pvar.update()
 
     # Test Vehicle class.
-    x0 = np.array( [[1], [0]] )
+    X0 = 8*np.random.rand( 2,10 ) - 4
 
-    vhccolor = 'purple'
-    vhc = Vehicle2D( x0, fig=fig, axs=axs, color=vhccolor )
-    plt.pause(5)
+    scolor = 'purple'
+    swarm = Swarm2D( X0, fig=fig, axs=axs, color=scolor, tail_length=250 )
+    swarm.draw()
+
+    X = X0
+    for i in range( 1000 ):
+        X = model( X )
+        swarm.update( X )
+        plt.pause( 1e-3 )
 
     # # Test swarm.
     # X0 = np.random.rand( 2, 3 )

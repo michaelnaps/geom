@@ -13,7 +13,7 @@ def rotZ(theta):
 
 class Vectors:
     def __init__(self, vertices, fig=None, axs=None,
-            color='k', arrows=True):
+            color='k', arrows=True, zorder=1):
         self.Nv = vertices.shape[1]
 
         # Initialize vertices.

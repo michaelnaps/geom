@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 
 class Circle:
     def __init__(self, center, radius,
-            fig=None, axs=None, color='#9C9C9C'):
+            fig=None, axs=None, color='#9C9C9C',
+            zorder=10):
         self.x = center
         self.r = radius
 
@@ -18,6 +19,7 @@ class Circle:
         self.spherepatch = None
         self.color = color
         self.linewidth = 2.0
+        self.zorder = zorder
         self.grid = True
 
     def setLineWidth(self, width):

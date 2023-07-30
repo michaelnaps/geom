@@ -1,8 +1,7 @@
 import numpy as np
 
-from matplotlib import pyplot as plt
-from matplotlib import patches
-from matplotlib import path
+from GEOM.Circle import *
+from GEOM.Vectors import *
 
 # Class: Vehicle2D
 # Assumptions: Model is discrete.
@@ -12,29 +11,30 @@ class Vehicle2D:
             color='yellowgreen',
             draw_tail=1, tail_length=100,
             grid=1, pause=1e-3):
-        # create figure if not given
-        if fig is None and axs is None:
+        # Initialize fig and axs members.
+        if fig is None:
             self.fig, self.axs = plt.subplots()
         else:
-            self.fig = fig;  self.axs = axs
+            self.fig = fig
+            self.axs = axs
 
         # figure scaling, grid, equal axes
         self.axs.grid( grid )
 
-        # vehicle parameters
-        self.radius = radius
-        self.color = color
-        self.tail_color = color
-        self.edge_color = 'k'
-        self.zorder = zorder + 10  # needed when multiple vhc present
-        self.label = None
+        # Vehicle body.
+        self.body = Circle( x0, radius,
+            fig=self.fig, axs=self.axs, zorder=zorder+1,
+            color=color )
 
-        # tail parameters
+        # Vehicle tail.
         self.draw_tail = draw_tail
-        self.tail_zorder = zorder
         self.Nt = tail_length
-        self.linewidth = 2
-        self.linestyle = None
+        tail0 = np.kron( x0 ,np.ones( (1, self.Nt) ) )
+        self.tail = Vectors( tail0,
+            fig=self.fig, axs=self.axs, zorder=zorder,
+            color=color )
+        self.tail.setLineWidth( 2 )
+        self.tail.setLineStyle( None )
 
         # Forward tail variables (optional).
         self.forward_tail_color = None
@@ -42,11 +42,6 @@ class Vehicle2D:
 
         # simulation pause
         self.pause = pause
-
-        # draw vehicle and tail
-        self.drawVehicle( x0 )
-        if self.draw_tail:
-            self.drawTail( np.kron( x0 ,np.ones( (1, self.Nt) ) ) )
 
     def initForwardTail(self, xList, color='orange'):
         # Initialize forward tail.
@@ -56,38 +51,51 @@ class Vehicle2D:
         # Return instance of self.
         return self
 
-    def draw(self, x):
-        self.drawVehicle( x )
+    def updateVehicle(self, x):
+        # Update vehicle location.
+        self.body.update( center=x, radius=None )
+        # Return instance of self.
+        return self
+
+    def updateTail(self, x):
+        # Set new tail vertices.
+        tail = self.tail.vList
+        tail[:,:-1] = tail[:,1:]
+        tail[:,-1] = x[:,0]
+
+        # Update vector list.
+        self.tail.setVertices( tail )
+
+        # Return instance of self.
+        return self
+
+    def updateForwardTail(self, xList):
+        # Re-initialize forward tail.
+        self.forward_tail_patch.remove()
+        self.drawForwardTail( xList )
+
+        # Return instance of self.
+        return self
+
+    def update(self, x):
+        # Update body and tail values appropriately.
+        self.updateVehicle( x )
         if self.draw_tail:
-            self.drawTail( x )
+            self.updateTail( x )
+
         # Return instance of self.
         return self
 
-    def drawVehicle(self, x):
+    def drawVehicle(self):
         # create vehicle circle
-        self.body = patches.Circle( x[:,0], self.radius,
-            facecolor=self.color, edgecolor=self.edge_color,
-            zorder=self.zorder )
-
-        # add to plot
-        self.axs.add_patch( self.body )
+        self.body.draw()
 
         # Return instance of self.
         return self
 
-    def drawTail(self, x):
-        # if x is a data set
-        if x.shape[1] > 1:
-            self.tail = x
-        else:
-            self.tail[:,:-1] = self.tail[:,1:]
-            self.tail[:,-1] = x[:,0]
-
+    def drawTail(self):
         # create vehicle tail object
-        self.tail_patch = patches.PathPatch( path.Path( self.tail.T ),
-            color=self.tail_color, linewidth=self.linewidth, linestyle=self.linestyle,
-            fill=0, zorder=self.tail_zorder )
-        self.axs.add_patch( self.tail_patch )
+        self.tail.draw()
 
         # Return instance of self.
         return self
@@ -104,26 +112,15 @@ class Vehicle2D:
         # Return instance of self.
         return self
 
-    def update(self, x, pause=1):
-        # Remove vehicle body and tail.
-        self.body.remove()
+    def draw(self, pause=0):
+        # Draw vehicle and tail appropriately.
+        self.drawVehicle()
         if self.draw_tail:
-            self.tail_patch.remove()
+            self.drawTail()
 
-        # Update drawing.
-        self.draw( x )
-
-        # Pause plotting/sim if requested.
+        # Pause if necessary.
         if pause:
             plt.pause( self.pause )
-
-        # Return instance of self.
-        return self
-
-    def updateForwardTail(self, xList):
-        # Re-initialize forward tail.
-        self.forward_tail_patch.remove()
-        self.drawForwardTail( xList )
 
         # Return instance of self.
         return self
@@ -145,5 +142,37 @@ class Vehicle2D:
         return self
 
 class Swarm2D( Vehicle2D ):
-    def __init__(self, X0, fig=None, axs=None):
-        pass
+    def __init__(self, X0, radius=0.5,
+            fig=None, axs=None, zorder=10,
+            color='yellowgreen',
+            draw_tail=1, tail_length=100,
+            grid=1, pause=1e-3):
+        # Initialize fig and axs members.
+        if fig is None:
+            self.fig, self.axs = plt.subplots()
+        else:
+            self.fig = fig
+            self.axs = axs
+
+        # Initialize vehicle list.
+        self.vhcList = [
+            Vehicle2D( x0[:,None], radius=radius,
+                fig=fig, axs=axs, zorder=zorder+i,
+                color=color, draw_tail=draw_tail,
+                grid=1, pause=1e-3 )
+            for i, x0 in enumerate( X0.T )
+        ]
+        self.pause = pause
+
+    def update(self, X):
+        # Update individual vhc terms.
+        for x, vhc in zip( X.T, self.vhcList ):
+            vhc.update( x[:,None] )
+
+        # Return instance of self.
+        return self
+
+    def draw(self):
+        # Update individual vhc terms.
+        for vhc in self.vhcList:
+            vhc.draw()
