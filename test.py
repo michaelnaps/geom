@@ -26,15 +26,17 @@ if __name__ == '__main__':
     ] )
 
     # Initialize shape variables.
-    fig, axs = plt.subplots()
-    axs.set_ylim( (-5, 5) )
-    axs.axis( 'equal' )
+    fig, axs = plt.subplots();
     cvar = Circle( center, radius,
         fig=fig, axs=axs, color=ccolor )
     pvar = Polygon( vList,
         fig=fig, axs=axs, color=pcolor )
     vvar = Vectors( vList,
         fig=fig, axs=axs )
+
+    # Axis parameters.
+    axs.set_ylim( (-5, 5) )
+    axs.axis( 'equal' )
 
     # Plot shapes.
     cvar.draw()
