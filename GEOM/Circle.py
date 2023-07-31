@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 class Circle:
     def __init__(self, center, radius,
             fig=None, axs=None, color='#9C9C9C',
-            zorder=10):
+            zorder=1):
         self.x = center
         self.r = radius
 
@@ -21,6 +21,7 @@ class Circle:
         self.linewidth = 2.0
         self.zorder = zorder
         self.grid = True
+        self.zorder = zorder
 
     def setLineWidth(self, width):
         self.linewidth = width
@@ -67,7 +68,7 @@ class Circle:
             face = self.color
 
         self.circlepatch = plt.Circle( self.x[:,0], self.r,
-            facecolor=face, edgecolor=edge,
+            facecolor=face, edgecolor=edge, zorder=self.zorder,
             linewidth=self.linewidth )
         self.axs.add_patch( self.circlepatch )
 

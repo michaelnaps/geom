@@ -31,6 +31,7 @@ class Vectors:
         self.linewidth = 2.0
         self.linestyle = None
         self.grid = 1
+        self.zorder = zorder
 
     def setLineWidth(self, width):
         self.linewidth = width
@@ -72,8 +73,8 @@ class Vectors:
         self.pathpatch = patches.PathPatch(
             path.Path( self.vList.T ),
             facecolor='none', edgecolor=self.color,
-            linewidth=self.linewidth,
-            linestyle=self.linestyle )
+            linewidth=self.linewidth, linestyle=self.linestyle,
+            zorder=self.zorder )
         self.axs.add_patch( self.pathpatch )
 
         # Return instance of self.

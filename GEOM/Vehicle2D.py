@@ -103,8 +103,8 @@ class Vehicle2D:
     def drawForwardTail(self, xList):
         # Initialize tail variables
         self.forward_tail_patch = patches.PathPatch( path.Path( xList.T ),
-            color=self.forward_tail_color, linewidth=self.linewidth, linestyle=self.linestyle,
-            fill=0, zorder=self.tail_zorder+5 )
+            color=self.forward_tail_color, linewidth=self.tail.linewidth, linestyle=self.tail.linestyle,
+            fill=0, zorder=None )
 
         # Add patch.
         self.axs.add_patch( self.forward_tail_patch )
