@@ -39,6 +39,7 @@ class Vehicle2D:
         # Forward tail variables (optional).
         self.forward_tail_color = None
         self.forward_tail_patch = None
+        self.forward_tail_zorder = None
 
         # simulation pause
         self.pause = pause
