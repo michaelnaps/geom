@@ -43,8 +43,9 @@ class Vehicle2D:
         # simulation pause
         self.pause = pause
 
-    def initForwardTail(self, xList, color='orange'):
+    def initForwardTail(self, xList, zorder=10, color='orange'):
         # Initialize forward tail.
+        self.forward_tail_zorder = zorder
         self.forward_tail_color = color
         self.drawForwardTail( xList )
 
@@ -104,7 +105,7 @@ class Vehicle2D:
         # Initialize tail variables
         self.forward_tail_patch = patches.PathPatch( path.Path( xList.T ),
             color=self.forward_tail_color, linewidth=self.tail.linewidth, linestyle=self.tail.linestyle,
-            fill=0, zorder=None )
+            fill=0, zorder=self.forward_tail_zorder )
 
         # Add patch.
         self.axs.add_patch( self.forward_tail_patch )
