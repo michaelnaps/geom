@@ -19,6 +19,11 @@ class Polygon( Vectors ):
             fig=fig, axs=axs, color=color,
             zorder=zorder, arrows=False )
 
+    def setColor(self, color):
+        self.facecolor = color
+        # Return instance of self.
+        return self
+
 class Grid:
     def __init__(self, gamma, xBounds, yBounds,
         fig=None, axs=None, color='grey', zorder=1):
@@ -44,6 +49,11 @@ class Grid:
                     color=color, zorder=zorder )
                 self.gList[i][j].transform( dx=[[i*gamma],[-j*gamma]] )
 
+    def setCellColor(self, i, j, color):
+        self.gList[i][j].facecolor = color
+        # Return instance of self.
+        return self
+
     def transform(self, R=None, dx=None):
         for gRow in self.gList:
             for cell in gRow:
@@ -56,11 +66,6 @@ class Grid:
         for gRow in self.gList:
             for cell in gRow:
                 cell.draw()
-        # Return instance of self.
-        return self
-
-    def updateCellColor(self, i, j, color):
-        self.gList[i][j].facecolor = color
         # Return instance of self.
         return self
 

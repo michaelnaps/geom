@@ -43,11 +43,12 @@ if __name__ == '__main__':
     pvar.draw()
     vvar.draw()
     plt.show( block=0 )
-    plt.pause(1)
+    plt.pause( 3 )
 
     # Test replot function.
     cvar.transform( np.zeros( (2,1) ) )
     pvar.transform( R=rotZ( np.pi/4 ), dx=np.array( [[1],[1]] ) )
+    pvar.setColor( 'cornflowerblue' )
     cvar.update()
     pvar.update()
 
@@ -58,8 +59,8 @@ if __name__ == '__main__':
     gvar = Grid( gamma, xBounds, yBounds, fig=fig, axs=axs )
     gvar.draw()
     plt.pause( 3 )
-    gvar.updateCellColor( 0, 0, 'r' )
-    gvar.updateCellColor( 4, 3, 'r' )
+    gvar.setCellColor( 0, 0, 'r' )
+    gvar.setCellColor( 4, 3, 'r' )
     gvar.update( R=rotZ( np.pi/4 ), dx=[[-2],[2]] )
 
     # Test Vehicle class.
