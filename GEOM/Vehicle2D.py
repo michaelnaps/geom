@@ -143,7 +143,7 @@ class Vehicle2D:
         # Return instance of self.
         return self
 
-class Swarm2D( Vehicle2D ):
+class Swarm2D:
     def __init__(self, X0, radius=0.5,
             fig=None, axs=None, zorder=10,
             color='yellowgreen',

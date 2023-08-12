@@ -48,16 +48,6 @@ class Circle:
         # Return instance of self.
         return self
 
-    def update(self, center=None, radius=None):
-        # Transform if necessary.
-        self.transform( center, radius )
-
-        # Remove sphere patch from drawing and replot.
-        self.circlepatch.remove()
-        self.draw()
-
-        # Return instance of self.
-        return self
 
     def draw(self):
         if self.r < 0:
@@ -71,6 +61,17 @@ class Circle:
             facecolor=face, edgecolor=edge, zorder=self.zorder,
             linewidth=self.linewidth )
         self.axs.add_patch( self.circlepatch )
+
+        # Return instance of self.
+        return self
+
+    def update(self, center=None, radius=None):
+        # Transform if necessary.
+        self.transform( center, radius )
+
+        # Remove sphere patch from drawing and replot.
+        self.circlepatch.remove()
+        self.draw()
 
         # Return instance of self.
         return self

@@ -18,3 +18,50 @@ class Polygon( Vectors ):
         Vectors.__init__( self, vList,
             fig=fig, axs=axs, color=color,
             zorder=zorder, arrows=False )
+
+class Grid:
+    def __init__(self, gamma, xBounds, yBounds,
+        fig=None, axs=None, color='grey', zorder=1):
+        # Dimensions of grid (assume square).
+        self.n = round( (xBounds[1] - xBounds[0])/gamma )
+        self.m = round( (yBounds[1] - yBounds[0])/gamma )
+        self.gamma = gamma
+
+        # Grid zeros points (starts from top-left).
+        x0 = xBounds[0]
+        y0 = yBounds[1]
+        v0 = np.array( [
+            [x0, x0+gamma, x0+gamma, x0],
+            [y0, y0, y0-gamma, y0-gamma]
+        ] )
+
+        # Generate vector list from v0.
+        self.gList = [ [None for i in range( self.m )]
+            for j in range( self.n ) ]
+        for j in range( self.m ):
+            for i in range( self.n ):
+                self.gList[i][j] = Polygon( v0, fig=fig, axs=axs,
+                    color=color, zorder=zorder )
+                self.gList[i][j].transform( dx=[[i*gamma],[-j*gamma]] )
+
+    def transform(self, R=None, dx=None):
+        for gRow in self.gList:
+            for element in gRow:
+                element.transform( R=R, dx=dx )
+        # Return instance of self.
+        return self
+
+    def update(self, R=None, dx=None):
+        for gRow in self.gList:
+            for element in gRow:
+                element.update( R=R, dx=dx )
+        # Return instance of self.
+        return self
+
+    def draw(self):
+        # Draw each element in grid list
+        for gRow in self.gList:
+            for element in gRow:
+                element.draw()
+        # Return instance of self.
+        return self

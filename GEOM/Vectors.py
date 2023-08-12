@@ -48,9 +48,24 @@ class Vectors:
         # Return instance of self.
         return self
 
-    def transform(self, R=np.eye( 2, 2 ), dx=np.zeros( (2, 1) )):
+    def transform(self, R=None, dx=None):
+        # Default terms.
+        if R is None:  R = np.eye( 2,2 )
+        if dx is None:  dx = 0
         # Update position of vertices.
         self.vList = R@self.vList + dx
+        # Return instance of self.
+        return self
+
+    def draw(self):
+        # Plot polygon.
+        self.pathpatch = patches.PathPatch(
+            path.Path( self.vList.T ),
+            facecolor='none', edgecolor=self.color,
+            linewidth=self.linewidth, linestyle=self.linestyle,
+            zorder=self.zorder )
+        self.axs.add_patch( self.pathpatch )
+
         # Return instance of self.
         return self
 
@@ -64,18 +79,6 @@ class Vectors:
         # Replot the new polygon.
         self.pathpatch.remove()
         self.draw()
-
-        # Return instance of self.
-        return self
-
-    def draw(self):
-        # Plot polygon.
-        self.pathpatch = patches.PathPatch(
-            path.Path( self.vList.T ),
-            facecolor='none', edgecolor=self.color,
-            linewidth=self.linewidth, linestyle=self.linestyle,
-            zorder=self.zorder )
-        self.axs.add_patch( self.pathpatch )
 
         # Return instance of self.
         return self

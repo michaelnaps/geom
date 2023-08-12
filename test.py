@@ -51,6 +51,15 @@ if __name__ == '__main__':
     cvar.update()
     pvar.update()
 
+    # Test grid class.
+    gamma = 0.5
+    xBounds = (-3.5, 3.5)
+    yBounds = (-4, 4)
+    gvar = Grid( gamma, xBounds, yBounds, fig=fig, axs=axs )
+    gvar.draw()
+    plt.pause( 3 )
+    gvar.update( R=rotZ( np.pi/4 ), dx=[[-2],[2]] )
+
     # Test Vehicle class.
     X0 = 8*np.random.rand( 2,10 ) - 4
 
