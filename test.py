@@ -57,11 +57,11 @@ if __name__ == '__main__':
     xBounds = (-3.5, 3.5)
     yBounds = (-4, 4)
     gvar = Grid( gamma, xBounds, yBounds, fig=fig, axs=axs )
+    gvar.setCellColor( -1, -5, 'r' )
     gvar.draw()
     plt.pause( 3 )
     gvar.setCellColor( 0, 0, 'r' )
-    gvar.setCellColor( 4, 3, 'r' )
-    gvar.update( R=rotZ( np.pi/4 ), dx=[[-2],[2]] )
+    gvar.update()  # R=rotZ( np.pi/4 ), dx=[[-2],[2]] )
 
     # Test Vehicle class.
     X0 = 8*np.random.rand( 2,10 ) - 4

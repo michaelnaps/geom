@@ -41,8 +41,8 @@ class Grid:
         ] )
 
         # Generate vector list from v0.
-        self.gList = [ [None for i in range( self.m )]
-            for j in range( self.n ) ]
+        self.gList = [ [None for j in range( self.m )]
+            for i in range( self.n ) ]
         for i in range( self.n ):
             for j in range( self.m ):
                 self.gList[i][j] = Polygon( v0, fig=fig, axs=axs,
@@ -50,7 +50,7 @@ class Grid:
                 self.gList[i][j].transform( dx=[[i*gamma],[-j*gamma]] )
 
     def setCellColor(self, i, j, color):
-        self.gList[i][j].facecolor = color
+        self.gList[j][i].facecolor = color
         # Return instance of self.
         return self
 
