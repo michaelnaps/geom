@@ -46,22 +46,27 @@ class Grid:
 
     def transform(self, R=None, dx=None):
         for gRow in self.gList:
-            for element in gRow:
-                element.transform( R=R, dx=dx )
+            for cell in gRow:
+                cell.transform( R=R, dx=dx )
+        # Return instance of self.
+        return self
+
+    def draw(self):
+        # Draw each cell in grid list
+        for gRow in self.gList:
+            for cell in gRow:
+                cell.draw()
+        # Return instance of self.
+        return self
+
+    def updateCellColor(self, i, j, color):
+        self.gList[i][j].facecolor = color
         # Return instance of self.
         return self
 
     def update(self, R=None, dx=None):
         for gRow in self.gList:
-            for element in gRow:
-                element.update( R=R, dx=dx )
-        # Return instance of self.
-        return self
-
-    def draw(self):
-        # Draw each element in grid list
-        for gRow in self.gList:
-            for element in gRow:
-                element.draw()
+            for cell in gRow:
+                cell.update( R=R, dx=dx )
         # Return instance of self.
         return self

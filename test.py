@@ -58,6 +58,8 @@ if __name__ == '__main__':
     gvar = Grid( gamma, xBounds, yBounds, fig=fig, axs=axs )
     gvar.draw()
     plt.pause( 3 )
+    gvar.updateCellColor( 0, 0, 'r' )
+    gvar.updateCellColor( 4, 3, 'r' )
     gvar.update( R=rotZ( np.pi/4 ), dx=[[-2],[2]] )
 
     # Test Vehicle class.

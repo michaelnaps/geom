@@ -32,6 +32,7 @@ class Vectors:
         self.linestyle = None
         self.grid = 1
         self.zorder = zorder
+        self.facecolor= 'none'
 
     def setLineWidth(self, width):
         self.linewidth = width
@@ -61,7 +62,7 @@ class Vectors:
         # Plot polygon.
         self.pathpatch = patches.PathPatch(
             path.Path( self.vList.T ),
-            facecolor='none', edgecolor=self.color,
+            facecolor=self.facecolor, edgecolor=self.color,
             linewidth=self.linewidth, linestyle=self.linestyle,
             zorder=self.zorder )
         self.axs.add_patch( self.pathpatch )
