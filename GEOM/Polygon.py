@@ -54,6 +54,20 @@ class Grid:
         # Return instance of self.
         return self
 
+    def setLineWidth(self, width):
+        for gRow in self.gList:
+            for cell in gRow:
+                cell.setLineWidth( width )
+        # Return instance of self.
+        return self
+
+    def setLineStyle(self, style):
+        for gRow in self.gList:
+            for cell in gRow:
+                cell.setLineStyle( style )
+        # Return instance of self.
+        return self
+
     def transform(self, R=None, dx=None):
         for gRow in self.gList:
             for cell in gRow:
