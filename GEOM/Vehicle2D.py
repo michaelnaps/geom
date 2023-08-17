@@ -170,7 +170,7 @@ class Swarm2D:
 
     def setLineStyle(self, style):
         for vhc in self.vhcList:
-            vhc.setLineStyle( style )
+            vhc.tail.setLineStyle( style )
         # Return instance of self.
         return self
 
