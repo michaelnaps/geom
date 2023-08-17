@@ -168,11 +168,16 @@ class Swarm2D:
         ]
         self.pause = pause
 
+    def setLineStyle(self, style):
+        for vhc in self.vhcList:
+            vhc.setLineStyle( style )
+        # Return instance of self.
+        return self
+
     def update(self, X):
         # Update individual vhc terms.
         for x, vhc in zip( X.T, self.vhcList ):
             vhc.update( x[:,None] )
-
         # Return instance of self.
         return self
 
@@ -180,3 +185,5 @@ class Swarm2D:
         # Update individual vhc terms.
         for vhc in self.vhcList:
             vhc.draw()
+        # Return instance of self.
+        return self
