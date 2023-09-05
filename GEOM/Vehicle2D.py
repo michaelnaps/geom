@@ -174,9 +174,12 @@ class Swarm2D:
         # Return instance of self.
         return self
 
-    def setLineStyle(self, style):
+    def setLineStyle(self, style, body=False):
         for vhc in self.vhcList:
-            vhc.tail.setLineStyle( style )
+            if body:
+                vhc.body.setLineStyle( style )
+            else:
+                vhc.tail.setLineStyle( style )
         # Return instance of self.
         return self
 

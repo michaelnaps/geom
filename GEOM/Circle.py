@@ -18,6 +18,7 @@ class Circle:
         # Plotting parameters.
         self.spherepatch = None
         self.color = color
+        self.linestyle = None
         self.linewidth = 2.0
         self.zorder = zorder
         self.grid = True
@@ -25,6 +26,13 @@ class Circle:
 
     def setLineWidth(self, width):
         self.linewidth = width
+        # Return instance of self.
+        return self
+
+    def setLineStyle(self, style):
+        self.linestyle = style
+        # Return instance of self.
+        return self
 
     def distance(self, pt):
         # Check if circle is filled/empty.
@@ -59,7 +67,7 @@ class Circle:
 
         self.circlepatch = plt.Circle( self.x[:,0], self.r,
             facecolor=face, edgecolor=edge, zorder=self.zorder,
-            linewidth=self.linewidth )
+            linewidth=self.linewidth, linestyle=self.linestyle )
         self.axs.add_patch( self.circlepatch )
 
         # Return instance of self.
