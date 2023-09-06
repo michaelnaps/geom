@@ -168,9 +168,12 @@ class Swarm2D:
         ]
         self.pause = pause
 
-    def setLineWidth(self, width):
+    def setLineWidth(self, width, body=False):
         for vhc in self.vhcList:
-            vhc.tail.setLineWidth( width )
+            if body:
+                vhc.body.setLineWidth( width )
+            else:
+                vhc.tail.setLineWidth( width )
         # Return instance of self.
         return self
 
