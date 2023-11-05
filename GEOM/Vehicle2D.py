@@ -157,10 +157,11 @@ class Swarm2D:
             self.axs = axs
 
         # Initialize vehicle list.
+        self.color = color
         self.vhcList = [
             Vehicle2D( x0[:,None], radius=radius,
                 fig=self.fig, axs=self.axs,
-                zorder=zorder+i, color=color,
+                zorder=zorder+i, color=self.color,
                 draw_tail=draw_tail,
                 tail_length=tail_length,
                 grid=1, pause=1e-3 )
