@@ -187,6 +187,13 @@ class Swarm2D:
         # Return instance of self.
         return self
 
+    def remove(self):
+        # Remove individual vehicle terms.
+        for vhc in self.vhcList:
+            vhc.body.circlepatch.remove()
+        # Return instance of self.
+        return self
+
     def update(self, X):
         # Update individual vhc terms.
         for x, vhc in zip( X.T, self.vhcList ):

@@ -56,7 +56,6 @@ class Circle:
         # Return instance of self.
         return self
 
-
     def draw(self):
         if self.r < 0:
             edge = self.color
