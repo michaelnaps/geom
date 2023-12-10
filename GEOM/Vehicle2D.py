@@ -1,5 +1,4 @@
 import numpy as np
-
 from GEOM.Circle import *
 from GEOM.Vectors import *
 
