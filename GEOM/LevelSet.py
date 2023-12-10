@@ -1,18 +1,28 @@
 import numpy as np
 from GEOM.Polygon import *
 
-def dist( x, y ):
+def dist(x, y):
     return ((x - y).T@(x - y))[0][0]
 
-def orderByDistance(X, i0=0):
+def orderByDist(X, i0=0):
+    # Initialize x-instance and ordered set variables.
     xnext = X[:,i0,None]
     Xordr = np.copy( xnext )
+
+    # Copy X to reference variable, excluding xnext.
     Xref = np.delete( X, obj=i0, axis=1 )
-    while Xref.shape[1] > 0:
+    while Xref.shape[1] > 0:  # While Xref is non-empty.
+        # Create list of distances from most recent point.
         dList = [dist( xnext, xref[:,None] ) for xref in Xref.T]
+
+        # Isolate minimum index.
         inext = dList.index( min( dList ) )
+
+        # Replacemore recent with minimum and add to set.
         xnext = Xref[:,inext,None]
         Xordr = np.hstack( (Xordr, xnext) )
+
+        # Delete saved point from reference.
         Xref = np.delete( Xref, obj=inext, axis=1 )
     return Xordr
 
@@ -32,7 +42,7 @@ class LevelSet:
         # Level set parameters.
         self.F = F  # Objective function.
         self.e = e  # Level set differences.
-        self.a = a  # Grid differences.
+        self.a = a  # Grid density.
         self.tol = tol  # Region tolerance.
 
         # Create mesh over x-y plane.
@@ -54,10 +64,11 @@ class LevelSet:
             if h is not None and h not in self.hList:
                 self.hList = self.hList + [h]
 
-        # Create polygons out of levels curves.
+        # Create polygons out of level set points.
         for h in self.hList:
-            self.levels[h] = orderByDistance( self.levels[h] )
-        self.curves = [ Polygon( self.levels[h], fig=self.fig, axs=self.axs,
+            # Order the level set by distance between points.
+            self.levels[h] = orderByDist( self.levels[h] )
+        self.levelPlots = [ Polygon( self.levels[h], fig=self.fig, axs=self.axs,
             color=color, zorder=zorder ) for h in self.hList ]
 
     def checkVal(self, x):
@@ -80,7 +91,7 @@ class LevelSet:
         return self
 
     def draw(self):
-        for curve in self.curves:
-            curve.draw()
+        for level in self.levelPlots:
+            level.draw()
         # Return instance of self.
         return self
