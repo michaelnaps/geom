@@ -1,12 +1,15 @@
 import numpy as np
 from GEOM.Polygon import *
 
+def dist( x, y ):
+    return ((x - y).T@(x - y))[0][0]
+
 def orderByDistance(X, i0=0):
     xnext = X[:,i0,None]
     Xordr = np.copy( xnext )
     Xref = np.delete( X, obj=i0, axis=1 )
     while Xref.shape[1] > 0:
-        dList = [((xnext - xref[:,None].T)@(xnext - xref[:,None]))[0][0] for xref in Xref.T]
+        dList = [dist( xnext, xref[:,None] ) for xref in Xref.T]
         inext = dList.index( min( dList ) )
         xnext = Xref[:,inext,None]
         Xordr = np.hstack( (Xordr, xnext) )
@@ -60,7 +63,7 @@ class LevelSet:
     def checkVal(self, x):
         h = self.F( x )/self.e
         hint = round( h )
-        return hint if h - hint < self.tol else None
+        return hint if abs( h - hint ) < self.tol else None
 
     def includeVal(self, x, h):
         if h is None:
