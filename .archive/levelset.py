@@ -78,9 +78,8 @@ class LevelSet:
             # Order the level set by distance between points.
             if self.levels[h].shape[1] != 1:
                 self.levels[h] = orderByDist( self.levels[h] )
-                self.levels[h] = np.hstack( (self.levels[h], self.levels[h][:,0,None]) )
                 self.iterations[h] = np.array( [[i for i in range( self.levels[h].shape[1] )]] )
-                self.transforms[h] = RealFourier( self.iterations[h], self.levels[h], N=100 ).dmd()
+                self.transforms[h] = RealFourier( self.iterations[h], self.levels[h] ).dmd()
                 self.smoothIter[h] = np.array( [[1/beta*i for i in range( beta*self.levels[h].shape[1] )]] )
                 self.smooth[h] = self.transforms[h].solve( self.smoothIter[h] )
         self.levelPlots = [ Polygon( self.smooth[h], fig=self.fig, axs=self.axs,
