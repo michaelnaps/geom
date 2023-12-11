@@ -7,6 +7,6 @@ if __name__ == '__main__':
     F = lambda x: (x.T@x)[0][0]
     lset = LevelSet( F, 10, 0.1, [-bound,bound], [-bound,bound], tol=1e-22 ).draw()
     lset.axs.axis( 'equal' )
-    lset.axs.axis( [-5, 5, -5, 5] )
+    lset.axs.axis( [-bound, bound, -bound, bound] )
     plt.show( block=0 )
     input( 'Press ENTER to exit program...' )
