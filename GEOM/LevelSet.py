@@ -1,5 +1,10 @@
+import sys
+from os.path import expanduser
+sys.path.insert( 0, expanduser('~')+'/prog/four' )
+
 import numpy as np
 from GEOM.Polygon import *
+from FOUR.Transforms import *
 
 def dist(x, y):
     return ((x - y).T@(x - y))[0][0]
@@ -65,11 +70,20 @@ class LevelSet:
                 self.hList = self.hList + [h]
 
         # Create polygons out of level set points.
+        self.iterations = {}
+        self.transforms = {}
+        self.smooth = {}
         for h in self.hList:
             # Order the level set by distance between points.
-            self.levels[h] = orderByDist( self.levels[h] )
-        self.levelPlots = [ Polygon( self.levels[h], fig=self.fig, axs=self.axs,
-            color=color, zorder=zorder ) for h in self.hList ]
+            if self.levels[h].shape[1] != 1:
+                self.levels[h] = orderByDist( self.levels[h] )
+                self.levels[h] = np.hstack( (self.levels[h], self.levels[h][:,0,None]) )
+                self.iterations[h] = np.array( [[i for i in range( self.levels[h].shape[1] )]] )
+                self.transforms[h] = RealFourier( self.iterations[h], self.levels[h], N=100 ).dmd()
+                smoothIter = np.array( [[0.1*i for i in range( 10*self.levels[h].shape[1] )]] )
+                self.smooth[h] = self.transforms[h].solve( smoothIter )
+        self.levelPlots = [ Polygon( self.smooth[h], fig=self.fig, axs=self.axs,
+            color=color, zorder=zorder ) for h in self.hList if self.levels[h].shape[1] != 1 ]
 
     def checkVal(self, x):
         h = self.F( x )/self.e
