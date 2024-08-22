@@ -186,6 +186,12 @@ class Swarm2D:
         # Return instance of self.
         return self
 
+    def setBodyColors(self, cList):
+        for (vhc, color) in zip(self.vhcList, cList):
+            vhc.body.setColor( color )
+        # Return instance of self.
+        return self
+
     def remove(self):
         # Remove individual vehicle terms.
         for vhc in self.vhcList:

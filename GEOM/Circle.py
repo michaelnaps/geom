@@ -34,6 +34,11 @@ class Circle:
         # Return instance of self.
         return self
 
+    def setColor(self, color):
+        self.color = color
+        # Return instance of self.
+        return self
+
     def distance(self, pt):
         # Check if circle is filled/empty.
         if self.r < 0:
