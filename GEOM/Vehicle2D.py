@@ -1,3 +1,4 @@
+
 import numpy as np
 from GEOM.Circle import *
 from GEOM.Vectors import *
@@ -157,7 +158,7 @@ class Swarm2D:
 
         # Initialize vehicle list.
         self.color = color
-        self.vhcList = [
+        self.vhcList = np.array( [
             Vehicle2D( x0[:,None], radius=radius,
                 fig=self.fig, axs=self.axs,
                 zorder=zorder+i, color=self.color,
@@ -165,7 +166,7 @@ class Swarm2D:
                 tail_length=tail_length,
                 grid=1, pause=1e-3 )
             for i, x0 in enumerate( X0.T )
-        ]
+        ] )
         self.pause = pause
 
     def setLineWidth(self, width, body=False):
@@ -199,10 +200,18 @@ class Swarm2D:
         # Return instance of self.
         return self
 
-    def update(self, X):
+    def update(self, X, iList=None):
+        # If select update list is given.
+        if iList is not None:
+            X = X[:,iList]
+            vhcList = self.vhcList[iList]
+        else:
+            vhcList = self.vhcList
+
         # Update individual vhc terms.
-        for x, vhc in zip( X.T, self.vhcList ):
+        for x, vhc in zip( X.T, vhcList ):
             vhc.update( x[:,None] )
+
         # Return instance of self.
         return self
 
